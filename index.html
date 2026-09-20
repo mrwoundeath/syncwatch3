@@ -5,131 +5,210 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SyncWatch 🎬</title>
 <style>
-:root {
-  --bg:#0d0d14; --surface:#16161f; --surface2:#1e1e2a; --border:#2a2a3a;
-  --accent:#7c6af7; --accent2:#5b4fe0; --text:#e8e8f5; --text2:#8888aa;
-  --green:#22c55e; --red:#ef4444; --yellow:#f59e0b;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
+:root{
+  --bg:#0d0d14;--surface:#16161f;--surface2:#1e1e2a;--border:#2a2a3a;
+  --accent:#7c6af7;--accent2:#5b4fe0;--text:#e8e8f5;--text2:#8888aa;
+  --green:#22c55e;--red:#ef4444;--yellow:#f59e0b;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Segoe UI',Tahoma,Arial,sans-serif;overflow:hidden}
-.screen{display:none;height:100vh;flex-direction:column}
+html,body{
+  height:100%;width:100%;
+  background:var(--bg);color:var(--text);
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  overflow:hidden;
+}
+.screen{display:none;width:100%;height:100vh;flex-direction:column}
 .screen.active{display:flex}
 
-/* JOIN */
-#joinScreen{align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at 50% 30%,#1a1535 0%,var(--bg) 70%)}
-.join-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px 28px;width:100%;max-width:380px;display:flex;flex-direction:column;gap:18px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.join-logo{text-align:center;font-size:52px}
-.join-title{text-align:center;font-size:24px;font-weight:800}
-.join-sub{text-align:center;font-size:14px;color:var(--text2);line-height:1.6}
-.field-label{font-size:13px;color:var(--text2);margin-bottom:6px;font-weight:600}
-.field-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:15px;color:var(--text);outline:none;transition:border-color .2s;font-family:inherit;text-align:right}
-.field-input:focus{border-color:var(--accent)}
-.btn{border:none;border-radius:12px;padding:13px 20px;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--accent2)}
+/* ── JOIN ── */
+#joinScreen{
+  align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(ellipse at 50% 30%,#1a1535,var(--bg) 70%);
+}
+.join-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:32px 24px;width:100%;max-width:360px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.join-logo{text-align:center;font-size:48px}
+.join-title{text-align:center;font-size:22px;font-weight:800}
+.join-sub{text-align:center;font-size:13px;color:var(--text2);line-height:1.6}
+.flabel{font-size:12px;color:var(--text2);margin-bottom:5px;font-weight:600}
+.finput{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:11px 14px;font-size:15px;color:var(--text);
+  outline:none;font-family:inherit;text-align:right;
+}
+.finput:focus{border-color:var(--accent)}
+.btn-join{
+  background:var(--accent);color:#fff;border:none;border-radius:10px;
+  padding:13px;font-size:15px;font-weight:700;cursor:pointer;
+  font-family:inherit;width:100%;
+}
+.join-note{font-size:11px;color:var(--text2);text-align:center;line-height:1.7}
 
-/* HEADER */
-header{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;padding-top:calc(10px + env(safe-area-inset-top,0px))}
-.header-logo{font-size:18px;font-weight:800;color:var(--accent);white-space:nowrap}
-.room-badge{font-size:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:4px 10px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:6px}
-.room-badge:active{border-color:var(--accent)}
-.conn-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;transition:background .3s}
-.conn-dot.ok{background:var(--green)}
-.conn-dot.warn{background:var(--yellow)}
-.host-badge{font-size:11px;background:var(--accent);color:#fff;border-radius:6px;padding:2px 8px;font-weight:700;display:none}
-.host-badge.show{display:inline-block}
-.viewers-label{margin-right:auto;font-size:13px;color:var(--text2)}
+/* ── APP ── */
+#appScreen{flex-direction:column}
 
-/* MAIN */
+/* header */
+.hdr{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:8px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;
+  padding-top:calc(8px + env(safe-area-inset-top,0px));
+}
+.hdr-logo{font-size:16px;font-weight:800;color:var(--accent);white-space:nowrap}
+.room-pill{
+  font-size:11px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:3px 9px;color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;gap:5px;
+}
+.cdot{width:7px;height:7px;border-radius:50%;background:var(--red);transition:background .3s;flex-shrink:0}
+.cdot.ok{background:var(--green)}.cdot.warn{background:var(--yellow)}
+.hbadge{font-size:10px;background:var(--accent);color:#fff;border-radius:5px;padding:2px 7px;font-weight:700;display:none}
+.hbadge.show{display:inline-block}
+.vcnt{margin-right:auto;font-size:12px;color:var(--text2)}
+.fs-btn{
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  color:var(--text2);font-size:16px;padding:4px 8px;cursor:pointer;
+  display:flex;align-items:center;
+}
+
+/* main area */
 .main{display:flex;flex:1;overflow:hidden;min-height:0}
 
-/* CHAT */
-.chat-panel{width:280px;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--surface);flex-shrink:0}
-.chat-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--text2);flex-shrink:0}
-.msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
-.msgs::-webkit-scrollbar{width:3px}
-.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.msg{padding:8px 12px;border-radius:14px;font-size:13px;line-height:1.45;max-width:100%;word-break:break-word;animation:fadeUp .2s}
-@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.msg.me{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-left-radius:4px}
-.msg.other{background:var(--surface2);align-self:flex-start;border-bottom-right-radius:4px}
-.msg.system{background:none;color:var(--text2);font-size:12px;text-align:center;padding:2px 8px;align-self:center}
-.msg .sender{font-size:11px;font-weight:700;opacity:.7;margin-bottom:3px}
-.msg .mtime{font-size:10px;opacity:.45;margin-top:3px}
-.msg.me .mtime{text-align:left}
-.chat-input-area{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
-textarea.chat-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:9px 13px;font-size:14px;color:var(--text);outline:none;resize:none;height:40px;max-height:100px;transition:border-color .2s;font-family:inherit;line-height:1.4}
-textarea.chat-input:focus{border-color:var(--accent)}
-.send-btn{background:var(--accent);border:none;border-radius:12px;color:#fff;width:40px;height:40px;cursor:pointer;flex-shrink:0;font-size:16px;display:flex;align-items:center;justify-content:center}
-.send-btn:active{background:var(--accent2)}
+/* ── CHAT ── */
+.chat-panel{
+  width:160px;flex-shrink:0;display:flex;flex-direction:column;
+  border-right:1px solid var(--border);background:var(--surface);
+}
+.chat-hdr{
+  padding:8px 10px;border-bottom:1px solid var(--border);
+  font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0;
+}
+.msgs{
+  flex:1;overflow-y:auto;padding:6px;
+  display:flex;flex-direction:column;gap:4px;scroll-behavior:smooth;
+}
+.msgs::-webkit-scrollbar{width:2px}
+.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.msg{
+  padding:5px 8px;border-radius:10px;font-size:11px;
+  line-height:1.4;max-width:100%;word-break:break-word;
+  animation:fu .15s;
+}
+@keyframes fu{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.msg.me{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-left-radius:3px}
+.msg.other{background:var(--surface2);align-self:flex-start;border-bottom-right-radius:3px}
+.msg.sys{background:none;color:var(--text2);font-size:10px;text-align:center;padding:2px 4px;align-self:center}
+.msg .sndr{font-size:10px;font-weight:700;opacity:.7;margin-bottom:2px}
+.msg .mt{font-size:9px;opacity:.4;margin-top:2px}
+.msg.me .mt{text-align:left}
+.chat-inp-wrap{
+  padding:6px 8px;border-top:1px solid var(--border);
+  display:flex;gap:5px;flex-shrink:0;
+  padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));
+}
+textarea.cinp{
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:6px 8px;font-size:12px;color:var(--text);
+  outline:none;resize:none;height:34px;max-height:80px;
+  font-family:inherit;line-height:1.3;
+}
+textarea.cinp:focus{border-color:var(--accent)}
+.sbtn{
+  background:var(--accent);border:none;border-radius:8px;
+  color:#fff;width:34px;height:34px;cursor:pointer;flex-shrink:0;
+  font-size:14px;display:flex;align-items:center;justify-content:center;
+}
+.sbtn:active{background:var(--accent2)}
 
-/* VIDEO */
+/* ── VIDEO ── */
 .video-panel{flex:1;display:flex;flex-direction:column;background:#000;overflow:hidden;position:relative}
-.video-wrapper{flex:1;display:flex;align-items:center;justify-content:center;position:relative;background:#000;overflow:hidden}
+.vwrap{flex:1;display:flex;align-items:center;justify-content:center;position:relative;background:#000;overflow:hidden}
 video{width:100%;height:100%;object-fit:contain;display:none}
 video.loaded{display:block}
 
-/* UPLOAD ZONE */
-.upload-zone{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px}
-.upload-zone.hidden{display:none}
-.drop-area{border:2px dashed var(--border);border-radius:20px;padding:36px 28px;text-align:center;cursor:pointer;transition:all .2s;max-width:320px;width:100%;background:rgba(124,106,247,.04)}
-.drop-area:active,.drop-area.drag{border-color:var(--accent);background:rgba(124,106,247,.1)}
-.drop-icon{font-size:48px;margin-bottom:12px}
-.drop-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px}
-.drop-sub{font-size:13px;color:var(--text2);line-height:1.6}
-.drop-formats{font-size:12px;margin-top:8px;color:var(--accent)}
-.prog-wrap{width:100%;max-width:300px;display:none;flex-direction:column;gap:8px;align-items:center}
-.prog-wrap.show{display:flex}
-.prog-bar{width:100%;height:6px;background:var(--border);border-radius:6px;overflow:hidden}
-.prog-fill{height:100%;background:var(--accent);border-radius:6px;width:0%;transition:width .1s}
-.prog-label{font-size:13px;color:var(--accent)}
-
-/* VIEWER ZONE */
-.viewer-zone{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--text2);padding:24px;text-align:center}
-.viewer-zone.hidden{display:none}
-.viewer-zone .big{font-size:48px;margin-bottom:8px}
-.viewer-zone h3{font-size:18px;color:var(--text);margin-bottom:8px}
-.viewer-zone p{font-size:14px;line-height:1.6}
-
-/* CONTROLS */
-.controls{background:linear-gradient(transparent,rgba(0,0,0,.92));padding:12px 16px 14px;display:none;flex-direction:column;gap:8px;flex-shrink:0;position:absolute;bottom:0;left:0;right:0;opacity:0;transition:opacity .3s}
-.controls.show{display:flex}
-.controls.visible{opacity:1}
-.seek-wrap{width:100%;height:22px;display:flex;align-items:center;cursor:pointer}
-.seek-track{width:100%;height:4px;background:rgba(255,255,255,.2);border-radius:4px;position:relative}
-.seek-fill{height:100%;background:var(--accent);border-radius:4px;pointer-events:none;width:0%;position:relative}
-.seek-fill::after{content:'';position:absolute;right:-6px;top:50%;transform:translateY(-50%);width:12px;height:12px;background:#fff;border-radius:50%;opacity:0;transition:opacity .15s}
-.seek-wrap:hover .seek-fill::after{opacity:1}
-.ctrl-row{display:flex;align-items:center;gap:10px}
-.ctrl-btn{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 6px;border-radius:8px;transition:background .15s;line-height:1;display:flex;align-items:center;justify-content:center}
-.ctrl-btn:active{background:rgba(255,255,255,.15)}
-.time-disp{font-size:12px;color:rgba(255,255,255,.7);white-space:nowrap}
-.vol-wrap{display:flex;align-items:center;gap:6px}
-input[type=range]{width:65px;accent-color:var(--accent);cursor:pointer}
-.fullscreen-btn{margin-right:0;margin-left:auto}
-.sync-toast{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(34,197,94,.9);color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
-.sync-toast.show{opacity:1}
-
-/* MOBILE — چت کنار ویدیو مثل دسکتاپ، کنترل‌ها همیشه نمایان */
-@media(max-width:600px){
-  .main{flex-direction:row}
-  .chat-panel{width:140px;min-width:140px;flex-shrink:0;border-right:1px solid var(--border);border-top:none}
-  .chat-header{padding:8px 10px;font-size:11px}
-  .msgs{padding:6px}
-  .msg{font-size:11px;padding:5px 8px;border-radius:10px}
-  .chat-input-area{padding:6px 8px;gap:5px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
-  textarea.chat-input{font-size:12px;padding:6px 8px;height:34px}
-  .send-btn{width:34px;height:34px;font-size:14px;border-radius:8px}
-  .video-panel{flex:1}
-  input[type=range]{width:40px}
-  /* کنترل‌ها روی موبایل همیشه نمایان */
-  .controls.show{opacity:1 !important}
-  .ctrl-btn{font-size:18px;padding:3px 4px}
-  .time-disp{font-size:10px}
+/* upload zone */
+.upzone{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px}
+.upzone.hidden{display:none}
+.dropbox{
+  border:2px dashed var(--border);border-radius:16px;padding:28px 20px;
+  text-align:center;cursor:pointer;transition:all .2s;max-width:280px;width:100%;
+  background:rgba(124,106,247,.04);
 }
+.dropbox:active,.dropbox.drag{border-color:var(--accent);background:rgba(124,106,247,.1)}
+.dico{font-size:40px;margin-bottom:10px}
+.dtitle{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
+.dsub{font-size:12px;color:var(--text2);line-height:1.5}
+.dfmt{font-size:11px;margin-top:6px;color:var(--accent)}
+.pwrap{width:100%;max-width:260px;display:none;flex-direction:column;gap:6px;align-items:center}
+.pwrap.show{display:flex}
+.pbar{width:100%;height:5px;background:var(--border);border-radius:5px;overflow:hidden}
+.pfill{height:100%;background:var(--accent);border-radius:5px;width:0%;transition:width .1s}
+.plbl{font-size:12px;color:var(--accent)}
+
+/* viewer zone */
+.vzne{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text2);padding:20px;text-align:center}
+.vzne.hidden{display:none}
+.vzne .big{font-size:40px;margin-bottom:6px}
+.vzne h3{font-size:16px;color:var(--text);margin-bottom:6px}
+.vzne p{font-size:12px;line-height:1.6}
+
+/* controls — همیشه نمایان روی موبایل */
+.ctrl{
+  background:linear-gradient(transparent,rgba(0,0,0,.95));
+  padding:10px 14px 12px;display:none;flex-direction:column;gap:6px;
+  flex-shrink:0;position:absolute;bottom:0;left:0;right:0;
+}
+.ctrl.show{display:flex}
+
+/* seek */
+.seekw{width:100%;height:24px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+.seekt{width:100%;height:5px;background:rgba(255,255,255,.25);border-radius:5px;position:relative}
+.seekf{height:100%;background:var(--accent);border-radius:5px;pointer-events:none;width:0%;position:relative}
+.seekf::after{
+  content:'';position:absolute;right:-7px;top:50%;transform:translateY(-50%);
+  width:14px;height:14px;background:#fff;border-radius:50%;
+}
+
+.crow{display:flex;align-items:center;gap:8px}
+.cbtn{
+  background:none;border:none;color:#fff;font-size:20px;cursor:pointer;
+  padding:3px 5px;border-radius:6px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.cbtn:active{background:rgba(255,255,255,.2)}
+.tdisp{font-size:11px;color:rgba(255,255,255,.7);white-space:nowrap}
+.volw{display:flex;align-items:center;gap:5px}
+input[type=range]{width:55px;accent-color:var(--accent);cursor:pointer}
+.ml{margin-right:0;margin-left:auto}
+
+.synct{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  background:rgba(34,197,94,.92);color:#fff;padding:5px 14px;
+  border-radius:16px;font-size:12px;font-weight:600;
+  opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;
+}
+.synct.show{opacity:1}
+
+/* fullscreen mode */
+.fs-mode .hdr{display:none}
+.fs-mode .main{height:100vh}
+.fs-mode .chat-panel{
+  position:fixed;left:0;top:0;bottom:0;z-index:50;
+  transform:translateX(100%);transition:transform .25s;
+  width:160px;
+}
+.fs-mode .chat-panel.open{transform:translateX(0)}
+.chat-toggle{
+  position:fixed;left:0;top:50%;transform:translateY(-50%);
+  background:var(--accent);color:#fff;border:none;
+  border-radius:0 8px 8px 0;padding:10px 6px;cursor:pointer;
+  font-size:14px;z-index:51;display:none;writing-mode:vertical-rl;
+  letter-spacing:2px;
+}
+.fs-mode .chat-toggle{display:flex}
 </style>
 </head>
 <body>
@@ -139,290 +218,220 @@ input[type=range]{width:65px;accent-color:var(--accent);cursor:pointer}
   <div class="join-card">
     <div class="join-logo">🎬</div>
     <div class="join-title">SyncWatch</div>
-    <div class="join-sub">فیلم رو با دوستت همزمان ببین — هر دو فایل رو لوکال باز می‌کنن</div>
+    <div class="join-sub">فیلم رو با دوستت همزمان ببین</div>
     <div>
-      <div class="field-label">اسمت</div>
-      <input class="field-input" id="nameInput" type="text" placeholder="مثلاً: علی" maxlength="20">
+      <div class="flabel">اسمت</div>
+      <input class="finput" id="nameInput" type="text" placeholder="مثلاً: علی" maxlength="20">
     </div>
     <div>
-      <div class="field-label">کد اتاق (هر دو نفر یکی بنویسید)</div>
-      <input class="field-input" id="roomInput" type="text" placeholder="مثلاً: film1" maxlength="20">
+      <div class="flabel">کد اتاق (هر دو نفر یکی بنویسید)</div>
+      <input class="finput" id="roomInput" type="text" placeholder="مثلاً: film1" maxlength="20">
     </div>
-    <button class="btn btn-primary" onclick="joinRoom()">ورود به اتاق ←</button>
-    <div style="font-size:12px;color:var(--text2);text-align:center;line-height:1.7">
-      ⚡ بدون آپلود — هر دو نفر همون فایل رو لوکال باز می‌کنن<br>
-      🔒 فقط play/pause/seek sync میشه
-    </div>
+    <button class="btn-join" onclick="joinRoom()">ورود به اتاق ←</button>
+    <div class="join-note">⚡ بدون آپلود — هر دو فایل رو لوکال باز می‌کنن<br>🔒 فقط play/pause/seek sync میشه</div>
   </div>
 </div>
 
 <!-- APP -->
 <div id="appScreen" class="screen">
-  <header>
-    <div class="header-logo">🎬 SyncWatch</div>
-    <div class="room-badge" id="roomBadge" onclick="copyRoom()">
-      <div class="conn-dot" id="connDot"></div>
-      <span id="roomLabel">—</span>
+  <div class="hdr">
+    <div class="hdr-logo">🎬 SyncWatch</div>
+    <div class="room-pill" onclick="copyRoom()">
+      <div class="cdot" id="cdot"></div>
+      <span id="roomLbl">—</span>
     </div>
-    <div class="host-badge" id="hostBadge">میزبان</div>
-    <div class="viewers-label" id="viewersLabel">۱ نفر</div>
-  </header>
+    <div class="hbadge" id="hbadge">میزبان</div>
+    <div class="vcnt" id="vcnt">۱ نفر</div>
+    <button class="fs-btn" onclick="toggleFS()" title="تمام‌صفحه">⛶</button>
+  </div>
 
-  <div class="main">
+  <div class="main" id="mainArea">
     <!-- Chat -->
-    <div class="chat-panel">
-      <div class="chat-header">💬 چت زنده</div>
+    <div class="chat-panel" id="chatPanel">
+      <div class="chat-hdr">💬 چت زنده</div>
       <div class="msgs" id="msgs">
-        <div class="msg system">در حال اتصال...</div>
+        <div class="msg sys">در حال اتصال...</div>
       </div>
-      <div class="chat-input-area">
-        <textarea class="chat-input" id="chatInput" placeholder="پیام..."></textarea>
-        <button class="send-btn" onclick="sendChat()">➤</button>
+      <div class="chat-inp-wrap">
+        <textarea class="cinp" id="chatInput" placeholder="پیام..."></textarea>
+        <button class="sbtn" onclick="sendChat()">➤</button>
       </div>
     </div>
 
     <!-- Video -->
     <div class="video-panel">
-      <div class="video-wrapper" id="videoWrapper">
+      <div class="vwrap" id="vwrap">
 
-        <div class="upload-zone hidden" id="uploadZone">
-          <div class="drop-area" id="dropArea" onclick="pickFile()">
-            <div class="drop-icon">🎥</div>
-            <div class="drop-title">فایل ویدیو رو انتخاب کن</div>
-            <div class="drop-sub">کلیک کن یا فایل رو اینجا بکش</div>
-            <div class="drop-formats">MP4 · MKV · AVI · MOV — هر سایزی</div>
+        <div class="upzone hidden" id="upzone">
+          <div class="dropbox" id="dropbox" onclick="pickFile()">
+            <div class="dico">🎥</div>
+            <div class="dtitle">فایل ویدیو رو انتخاب کن</div>
+            <div class="dsub">کلیک کن یا فایل رو بکش</div>
+            <div class="dfmt">MP4 · MKV · AVI · MOV — هر سایزی</div>
           </div>
-          <div class="prog-wrap" id="progWrap">
-            <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
-            <div class="prog-label" id="progLabel">در حال بارگذاری...</div>
+          <div class="pwrap" id="pwrap">
+            <div class="pbar"><div class="pfill" id="pfill"></div></div>
+            <div class="plbl" id="plbl">در حال بارگذاری...</div>
           </div>
         </div>
 
-        <div class="viewer-zone hidden" id="viewerZone">
+        <div class="vzne hidden" id="vzne">
           <div class="big">⏳</div>
           <h3>منتظر میزبان باش</h3>
-          <p>وقتی میزبان شروع کنه،<br>تو هم همون فایل رو انتخاب کن</p>
+          <p>وقتی میزبان شروع کنه<br>تو هم همون فایل رو انتخاب کن</p>
         </div>
 
-        <video id="videoEl" playsinline></video>
-        <div class="sync-toast" id="syncToast">همگام‌سازی ✓</div>
+        <video id="vid" playsinline></video>
+        <div class="synct" id="synct">همگام‌سازی ✓</div>
 
-        <div class="controls" id="controls">
-          <div class="seek-wrap" id="seekWrap">
-            <div class="seek-track">
-              <div class="seek-fill" id="seekFill"></div>
-            </div>
+        <div class="ctrl" id="ctrl">
+          <div class="seekw" id="seekw" touch-action="none">
+            <div class="seekt"><div class="seekf" id="seekf"></div></div>
           </div>
-          <div class="ctrl-row">
-            <button class="ctrl-btn" id="playBtn" onclick="togglePlay()">▶</button>
-            <button class="ctrl-btn" onclick="skip(-10)">⏪</button>
-            <button class="ctrl-btn" onclick="skip(10)">⏩</button>
-            <span class="time-disp" id="timedisp">۰:۰۰ / ۰:۰۰</span>
-            <div class="vol-wrap">🔊<input type="range" min="0" max="1" step="0.05" value="1" oninput="setVol(this.value)"></div>
-            <button class="ctrl-btn fullscreen-btn" onclick="goFullscreen()">⛶</button>
+          <div class="crow">
+            <button class="cbtn" id="playBtn" onclick="togglePlay()">▶</button>
+            <button class="cbtn" onclick="skip(-10)">⏪</button>
+            <button class="cbtn" onclick="skip(10)">⏩</button>
+            <span class="tdisp" id="tdisp">۰:۰۰ / ۰:۰۰</span>
+            <div class="volw">🔊<input type="range" min="0" max="1" step="0.05" value="1" oninput="setVol(this.value)"></div>
+            <button class="cbtn ml" onclick="toggleFS()">⛶</button>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 
+<!-- دکمه چت در حالت fullscreen -->
+<button class="chat-toggle" id="chatToggle" onclick="toggleChat()">چت</button>
+
 <input type="file" id="fileInput" accept="video/*" style="display:none" onchange="fileChosen(this)">
 
 <script>
-// ── آدرس سرور ──────────────────────────────────────────
-const WS_URL = location.protocol === 'https:'
-  ? `wss://${location.host}`
-  : `ws://${location.host}`;
+const WS_URL = location.protocol==='https:' ? `wss://${location.host}` : `ws://${location.host}`;
 
-// ── وضعیت ──────────────────────────────────────────────
-let ws = null, myName = '', myRoom = '', isHost = false;
-let videoEl = document.getElementById('videoEl');
-let videoReady = false, isSyncing = false;
-let controlsTimer = null, reconnDelay = 1000;
+let ws=null, myName='', myRoom='', isHost=false;
+const vid=document.getElementById('vid');
+let videoReady=false, isSyncing=false, reconnDelay=1000;
+let fsMode=false, chatOpen=false;
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 function toFa(n){return String(Math.floor(n)).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])}
 function fmtT(s){s=Math.floor(s||0);return toFa(Math.floor(s/60))+':'+String(s%60).padStart(2,'0')}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-// ── JOIN ────────────────────────────────────────────────
-$('nameInput').onkeydown = e => { if(e.key==='Enter') $('roomInput').focus(); };
-$('roomInput').onkeydown = e => { if(e.key==='Enter') joinRoom(); };
-
+// JOIN
+$('nameInput').onkeydown=e=>{if(e.key==='Enter')$('roomInput').focus()};
+$('roomInput').onkeydown=e=>{if(e.key==='Enter')joinRoom()};
 function joinRoom(){
-  const name = $('nameInput').value.trim();
-  const room = $('roomInput').value.trim().replace(/\s+/g,'_');
+  const name=$('nameInput').value.trim();
+  const room=$('roomInput').value.trim().replace(/\s+/g,'_');
   if(!name){$('nameInput').focus();return}
   if(!room){$('roomInput').focus();return}
   myName=name; myRoom=room;
   $('joinScreen').classList.remove('active');
   $('appScreen').classList.add('active');
-  $('roomLabel').textContent=room;
+  $('roomLbl').textContent=room;
   connectWS();
 }
 
-// ── WEBSOCKET ───────────────────────────────────────────
+// WS
 function connectWS(){
   setConn('warn');
-  try{ ws = new WebSocket(WS_URL); }
-  catch(e){ setConn('off'); schedRecon(); return; }
-
-  ws.onopen = () => {
-    reconnDelay=1000; setConn('ok');
-    send({type:'join',room:myRoom,name:myName});
-  };
-  ws.onmessage = e => {
-    let m; try{m=JSON.parse(e.data)}catch{return}
-    handleMsg(m);
-  };
-  ws.onclose = () => { setConn('off'); schedRecon(); };
-  ws.onerror = () => {};
-
-  setInterval(()=>{ if(ws&&ws.readyState===1) send({type:'ping'}); },25000);
+  try{ws=new WebSocket(WS_URL)}catch{setConn('off');schedRecon();return}
+  ws.onopen=()=>{reconnDelay=1000;setConn('ok');send({type:'join',room:myRoom,name:myName})};
+  ws.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch{return}handleMsg(m)};
+  ws.onclose=()=>{setConn('off');schedRecon()};
+  ws.onerror=()=>{};
+  setInterval(()=>{if(ws&&ws.readyState===1)send({type:'ping'})},25000);
 }
-
-function send(obj){
-  if(ws&&ws.readyState===1) ws.send(JSON.stringify(obj));
-}
-function schedRecon(){
-  setTimeout(()=>{ addSys('🔄 اتصال مجدد...'); connectWS(); }, reconnDelay);
-  reconnDelay=Math.min(reconnDelay*2,15000);
-}
-function setConn(s){
-  const d=$('connDot'); d.className='conn-dot';
-  if(s==='ok') d.classList.add('ok');
-  else if(s==='warn') d.classList.add('warn');
-}
+function send(o){if(ws&&ws.readyState===1)ws.send(JSON.stringify(o))}
+function schedRecon(){setTimeout(()=>{addSys('🔄 اتصال مجدد...');connectWS()},reconnDelay);reconnDelay=Math.min(reconnDelay*2,15000)}
+function setConn(s){const d=$('cdot');d.className='cdot';if(s==='ok')d.classList.add('ok');else if(s==='warn')d.classList.add('warn')}
 
 function handleMsg(msg){
   switch(msg.type){
     case 'joined':
       isHost=msg.isHost;
-      $('hostBadge').classList.toggle('show',isHost);
+      $('hbadge').classList.toggle('show',isHost);
       setupZones();
       addSys(isHost?'شما میزبان هستید — فایل ویدیو رو انتخاب کن':'منتظر میزبان باش...');
       break;
     case 'promoted':
-      isHost=true; $('hostBadge').classList.add('show');
-      addSys('⭐ '+msg.message); setupZones(); break;
+      isHost=true;$('hbadge').classList.add('show');addSys('⭐ '+msg.message);setupZones();break;
     case 'room_info':
-      $('viewersLabel').textContent=toFa(msg.count)+' نفر'; break;
+      $('vcnt').textContent=toFa(msg.count)+' نفر';break;
     case 'chat':
       if(msg.system){addSys(msg.text);break}
-      addMsg(msg.name,msg.text,false,msg.time); break;
+      addMsg(msg.name,msg.text,false,msg.time);break;
     case 'play':
       if(!videoReady){promptFile();return}
-      isSyncing=true; videoEl.currentTime=msg.time;
-      videoEl.play().catch(()=>{}); updatePlayBtn(); showSync();
-      setTimeout(()=>{isSyncing=false},600); break;
+      isSyncing=true;vid.currentTime=msg.time;vid.play().catch(()=>{});updatePB();showSync();
+      setTimeout(()=>{isSyncing=false},600);break;
     case 'pause':
       if(!videoReady){promptFile();return}
-      isSyncing=true; videoEl.currentTime=msg.time;
-      videoEl.pause(); updatePlayBtn(); showSync();
-      setTimeout(()=>{isSyncing=false},600); break;
+      isSyncing=true;vid.currentTime=msg.time;vid.pause();updatePB();showSync();
+      setTimeout(()=>{isSyncing=false},600);break;
     case 'seek':
       if(!videoReady)return;
-      isSyncing=true; videoEl.currentTime=msg.time; showSync();
-      setTimeout(()=>{isSyncing=false},600); break;
+      isSyncing=true;vid.currentTime=msg.time;showSync();
+      setTimeout(()=>{isSyncing=false},600);break;
   }
 }
 
-// ── ZONES ───────────────────────────────────────────────
 function setupZones(){
-  if(isHost){
-    $('uploadZone').classList.remove('hidden');
-    $('viewerZone').classList.add('hidden');
-  } else {
-    $('uploadZone').classList.add('hidden');
-    $('viewerZone').classList.remove('hidden');
-  }
+  if(isHost){$('upzone').classList.remove('hidden');$('vzne').classList.add('hidden')}
+  else{$('upzone').classList.add('hidden');$('vzne').classList.remove('hidden')}
 }
-
-function pickFile(){
-  $('fileInput').click();
-}
-
+function pickFile(){$('fileInput').click()}
 function promptFile(){
   addSys('🎬 میزبان شروع کرد — همون فایل رو انتخاب کن');
-  $('viewerZone').classList.add('hidden');
-  $('uploadZone').classList.remove('hidden');
+  $('vzne').classList.add('hidden');$('upzone').classList.remove('hidden');
   $('fileInput').click();
 }
 
 // Drag & Drop
-const dropArea=$('dropArea');
-['dragenter','dragover'].forEach(ev=>{
-  dropArea.addEventListener(ev,e=>{e.preventDefault();dropArea.classList.add('drag')});
-});
-['dragleave','drop'].forEach(ev=>{
-  dropArea.addEventListener(ev,e=>{e.preventDefault();dropArea.classList.remove('drag')});
-});
-dropArea.addEventListener('drop',e=>{
-  const f=e.dataTransfer?.files[0];
-  if(f&&f.type.startsWith('video/')) loadFile(f);
-});
-
-function fileChosen(input){
-  const f=input.files[0];
-  if(f) loadFile(f);
-}
+const db=$('dropbox');
+['dragenter','dragover'].forEach(ev=>db.addEventListener(ev,e=>{e.preventDefault();db.classList.add('drag')}));
+['dragleave','drop'].forEach(ev=>db.addEventListener(ev,e=>{e.preventDefault();db.classList.remove('drag')}));
+db.addEventListener('drop',e=>{const f=e.dataTransfer?.files[0];if(f)loadFile(f)});
+function fileChosen(inp){const f=inp.files[0];if(f)loadFile(f)}
 
 function loadFile(file){
-  $('progWrap').classList.add('show');
-  $('progFill').style.width='0%';
-  $('progLabel').textContent='در حال بارگذاری...';
-
-  const url=URL.createObjectURL(file);
-  videoEl.src=url; videoEl.load();
-
-  let p=0;
-  const t=setInterval(()=>{p=Math.min(p+15,85);$('progFill').style.width=p+'%'},100);
-
-  videoEl.oncanplay=()=>{
-    clearInterval(t);
-    $('progFill').style.width='100%';
-    $('progLabel').textContent='✅ آماده!';
+  $('pwrap').classList.add('show');$('pfill').style.width='0%';$('plbl').textContent='در حال بارگذاری...';
+  const url=URL.createObjectURL(file);vid.src=url;vid.load();
+  let p=0;const t=setInterval(()=>{p=Math.min(p+12,85);$('pfill').style.width=p+'%'},100);
+  vid.oncanplay=()=>{
+    clearInterval(t);$('pfill').style.width='100%';$('plbl').textContent='✅ آماده!';
     setTimeout(()=>{
-      videoReady=true;
-      videoEl.classList.add('loaded');
-      $('uploadZone').classList.add('hidden');
-      $('viewerZone').classList.add('hidden');
-      $('controls').classList.add('show','visible');
-      bindVideoEvents();
+      videoReady=true;vid.classList.add('loaded');
+      $('upzone').classList.add('hidden');$('vzne').classList.add('hidden');
+      $('ctrl').classList.add('show');
+      bindVidEvents();
       addSys('✅ فایل لود شد — آماده پخش!');
     },400);
   };
-  videoEl.onerror=()=>{
-    clearInterval(t);
-    $('progLabel').textContent='❌ خطا در بارگذاری';
-  };
+  vid.onerror=()=>{clearInterval(t);$('plbl').textContent='❌ خطا در بارگذاری'};
 }
 
-// ── VIDEO EVENTS ────────────────────────────────────────
-function bindVideoEvents(){
-  videoEl.addEventListener('timeupdate',()=>{
-    if(!videoEl.duration)return;
-    const pct=(videoEl.currentTime/videoEl.duration)*100;
-    $('seekFill').style.width=pct+'%';
-    $('timedisp').textContent=fmtT(videoEl.currentTime)+' / '+fmtT(videoEl.duration);
+function bindVidEvents(){
+  vid.addEventListener('timeupdate',()=>{
+    if(!vid.duration)return;
+    $('seekf').style.width=(vid.currentTime/vid.duration*100)+'%';
+    $('tdisp').textContent=fmtT(vid.currentTime)+' / '+fmtT(vid.duration);
   });
-  videoEl.addEventListener('play',updatePlayBtn);
-  videoEl.addEventListener('pause',updatePlayBtn);
+  vid.addEventListener('play',updatePB);
+  vid.addEventListener('pause',updatePB);
 
-  const vw=$('videoWrapper');
-  vw.addEventListener('mousemove',showCtrls);
-  // موبایل: touch روی ویدیو = play/pause + نمایش کنترل
-  vw.addEventListener('touchend',e=>{
-    // اگه روی seek یا دکمه‌های کنترل زده نشده
-    if(e.target.closest('.controls')) return;
-    e.preventDefault();
-    showCtrls();
-    togglePlay();
+  // Touch روی ویدیو = play/pause
+  $('vwrap').addEventListener('touchend',e=>{
+    if(e.target.closest('.ctrl')||e.target.closest('.seekw'))return;
+    e.preventDefault();togglePlay();
   },{passive:false});
 
-  // Seek
-  const sw=$('seekWrap'); let seeking=false;
+  // Seek — touch
+  const sw=$('seekw');let seeking=false;
   sw.addEventListener('mousedown',e=>{seeking=true;doSeek(e)});
   document.addEventListener('mousemove',e=>{if(seeking)doSeek(e)});
   document.addEventListener('mouseup',()=>{seeking=false});
@@ -430,86 +439,69 @@ function bindVideoEvents(){
   document.addEventListener('touchmove',e=>{if(seeking)doSeekT(e)},{passive:true});
   document.addEventListener('touchend',()=>{seeking=false});
 
-  // Keyboard
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;
     if(e.key===' '){e.preventDefault();togglePlay()}
     if(e.key==='ArrowRight')skip(10);
     if(e.key==='ArrowLeft')skip(-10);
-    if(e.key==='f'||e.key==='F')goFullscreen();
+    if(e.key==='f'||e.key==='F')toggleFS();
   });
 }
 
 function doSeek(e){
-  const r=$('seekWrap').getBoundingClientRect();
+  const r=$('seekw').getBoundingClientRect();
   const pct=1-Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
-  const t=pct*videoEl.duration;
-  videoEl.currentTime=t;
-  if(isHost) send({type:'seek',time:t});
+  const t=pct*vid.duration;vid.currentTime=t;
+  if(isHost)send({type:'seek',time:t});
 }
 function doSeekT(e){doSeek(e.touches[0])}
 
-function isMobile(){ return window.innerWidth<=600; }
-function showCtrls(){
-  $('controls').classList.add('visible');
-  if(isMobile()) return; // موبایل: همیشه نمایان
-  clearTimeout(controlsTimer);
-  controlsTimer=setTimeout(()=>{
-    if(!videoEl.paused) $('controls').classList.remove('visible');
-  },3000);
-}
-
-// ── PLAYBACK ────────────────────────────────────────────
 function togglePlay(){
   if(!videoReady)return;
-  if(videoEl.paused){
-    videoEl.play().catch(()=>{});
-    if(isHost) send({type:'play',time:videoEl.currentTime});
-  } else {
-    videoEl.pause();
-    if(isHost) send({type:'pause',time:videoEl.currentTime});
-  }
+  if(vid.paused){vid.play().catch(()=>{});if(isHost)send({type:'play',time:vid.currentTime})}
+  else{vid.pause();if(isHost)send({type:'pause',time:vid.currentTime})}
 }
 function skip(s){
   if(!videoReady)return;
-  const t=Math.max(0,Math.min(videoEl.duration||0,videoEl.currentTime+s));
-  videoEl.currentTime=t;
-  if(isHost) send({type:'seek',time:t});
+  const t=Math.max(0,Math.min(vid.duration||0,vid.currentTime+s));
+  vid.currentTime=t;if(isHost)send({type:'seek',time:t});
 }
-function setVol(v){videoEl.volume=v}
-function updatePlayBtn(){$('playBtn').textContent=videoEl.paused?'▶':'⏸'}
-function goFullscreen(){
-  const el=$('video-panel')||document.querySelector('.video-panel');
-  if(document.fullscreenElement) document.exitFullscreen();
-  else (el||document.documentElement).requestFullscreen?.();
-}
+function setVol(v){vid.volume=v}
+function updatePB(){$('playBtn').textContent=vid.paused?'▶':'⏸'}
 function showSync(){
-  const t=$('syncToast'); t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1500);
+  const t=$('synct');t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1500);
 }
 
-// ── CHAT ────────────────────────────────────────────────
-$('chatInput').onkeydown=e=>{
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}
-};
+// FULLSCREEN
+function toggleFS(){
+  fsMode=!fsMode;
+  document.getElementById('appScreen').classList.toggle('fs-mode',fsMode);
+  if(!fsMode){chatOpen=false;$('chatPanel').classList.remove('open')}
+}
+function toggleChat(){
+  chatOpen=!chatOpen;
+  $('chatPanel').classList.toggle('open',chatOpen);
+}
+
+// CHAT
+$('chatInput').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}};
 function sendChat(){
-  const inp=$('chatInput'); const text=inp.value.trim();
-  if(!text)return; inp.value='';
-  addMsg(myName,text,true,Date.now());
-  send({type:'chat',text});
+  const inp=$('chatInput');const text=inp.value.trim();if(!text)return;
+  inp.value='';addMsg(myName,text,true,Date.now());send({type:'chat',text});
 }
 function addMsg(name,text,isMe,ts){
-  const msgs=$('msgs'); const div=document.createElement('div');
+  const msgs=$('msgs');const div=document.createElement('div');
   div.className='msg '+(isMe?'me':'other');
   const d=new Date(ts||Date.now());
   const time=d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');
-  div.innerHTML=`<div class="sender">${esc(name)}</div><div>${esc(text)}</div><div class="mtime">${time}</div>`;
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+  div.innerHTML=`<div class="sndr">${esc(name)}</div><div>${esc(text)}</div><div class="mt">${time}</div>`;
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
 function addSys(text){
-  const msgs=$('msgs'); const div=document.createElement('div');
-  div.className='msg system'; div.textContent=text;
-  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+  const msgs=$('msgs');const div=document.createElement('div');
+  div.className='msg sys';div.textContent=text;
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
 }
 function copyRoom(){
   navigator.clipboard?.writeText(myRoom).then(()=>addSys('✅ کد اتاق کپی شد: '+myRoom));
