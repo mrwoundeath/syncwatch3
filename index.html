@@ -56,15 +56,14 @@ html,body{
 .vcnt{margin-right:auto;font-size:12px;color:var(--tx2)}
 
 /* ─── MAIN ─── */
-/* موبایل: ویدیو بالا، چت پایین — هر دو fixed height */
 .main{
-  flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;
+  flex:1;display:flex;flex-direction:row;overflow:hidden;min-height:0;
 }
 
 /* ─── VIDEO AREA ─── */
 .vpanel{
   flex:1;position:relative;background:#000;overflow:hidden;
-  min-height:0;
+  min-height:0;min-width:0;
 }
 video{width:100%;height:100%;object-fit:contain;display:none;position:absolute;inset:0}
 video.on{display:block}
@@ -140,10 +139,10 @@ input[type=range]{width:50px;accent-color:var(--ac)}
 .synct.on{opacity:1}
 
 /* ─── CHAT ─── */
-/* ثابت — ارتفاع مشخص پایین صفحه */
 .cpanel{
-  height:200px;flex-shrink:0;display:flex;flex-direction:column;
-  border-top:1px solid var(--brd);background:var(--surf);
+  width:160px;flex-shrink:0;display:flex;flex-direction:column;
+  border-right:1px solid var(--brd);background:var(--surf);
+  order:-1;
 }
 .chdr{padding:6px 12px;border-bottom:1px solid var(--brd);
       font-size:11px;font-weight:700;color:var(--tx2);flex-shrink:0}
