@@ -113,12 +113,22 @@ input[type=range]{width:65px;accent-color:var(--accent);cursor:pointer}
 .sync-toast{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:rgba(34,197,94,.9);color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
 .sync-toast.show{opacity:1}
 
-/* MOBILE */
+/* MOBILE — چت کنار ویدیو مثل دسکتاپ، کنترل‌ها همیشه نمایان */
 @media(max-width:600px){
-  .main{flex-direction:column}
-  .chat-panel{width:100%;height:40vh;border-right:none;border-top:1px solid var(--border);flex-shrink:0}
+  .main{flex-direction:row}
+  .chat-panel{width:140px;min-width:140px;flex-shrink:0;border-right:1px solid var(--border);border-top:none}
+  .chat-header{padding:8px 10px;font-size:11px}
+  .msgs{padding:6px}
+  .msg{font-size:11px;padding:5px 8px;border-radius:10px}
+  .chat-input-area{padding:6px 8px;gap:5px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px))}
+  textarea.chat-input{font-size:12px;padding:6px 8px;height:34px}
+  .send-btn{width:34px;height:34px;font-size:14px;border-radius:8px}
   .video-panel{flex:1}
-  input[type=range]{width:50px}
+  input[type=range]{width:40px}
+  /* کنترل‌ها روی موبایل همیشه نمایان */
+  .controls.show{opacity:1 !important}
+  .ctrl-btn{font-size:18px;padding:3px 4px}
+  .time-disp{font-size:10px}
 }
 </style>
 </head>
@@ -402,7 +412,14 @@ function bindVideoEvents(){
 
   const vw=$('videoWrapper');
   vw.addEventListener('mousemove',showCtrls);
-  vw.addEventListener('touchstart',showCtrls,{passive:true});
+  // موبایل: touch روی ویدیو = play/pause + نمایش کنترل
+  vw.addEventListener('touchend',e=>{
+    // اگه روی seek یا دکمه‌های کنترل زده نشده
+    if(e.target.closest('.controls')) return;
+    e.preventDefault();
+    showCtrls();
+    togglePlay();
+  },{passive:false});
 
   // Seek
   const sw=$('seekWrap'); let seeking=false;
@@ -432,8 +449,10 @@ function doSeek(e){
 }
 function doSeekT(e){doSeek(e.touches[0])}
 
+function isMobile(){ return window.innerWidth<=600; }
 function showCtrls(){
   $('controls').classList.add('visible');
+  if(isMobile()) return; // موبایل: همیشه نمایان
   clearTimeout(controlsTimer);
   controlsTimer=setTimeout(()=>{
     if(!videoEl.paused) $('controls').classList.remove('visible');
