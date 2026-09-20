@@ -2,483 +2,352 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SyncWatch 🎬</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#0d0d14;--surf:#16161f;--surf2:#1e1e2a;--brd:#2a2a3a;
-  --ac:#7c6af7;--ac2:#5b4fe0;--tx:#e8e8f5;--tx2:#8888aa;
-  --gr:#22c55e;--rd:#ef4444;--yw:#f59e0b;
-}
-html,body{
-  height:100%;width:100%;overflow:hidden;
-  background:var(--bg);color:var(--tx);
-  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
-}
+body{background:#0d0d14;color:#e8e8f5;font-family:Tahoma,Arial,sans-serif;overflow:hidden;height:100vh;display:flex;flex-direction:column}
 
-/* ─── SCREENS ─── */
-.scr{display:none;height:100vh;width:100%;flex-direction:column}
-.scr.on{display:flex}
+/* JOIN */
+#join{position:fixed;inset:0;background:#0d0d14;display:flex;align-items:center;justify-content:center;padding:20px;z-index:100}
+#join.hide{display:none}
+.card{background:#16161f;border:1px solid #2a2a3a;border-radius:16px;padding:28px 22px;width:100%;max-width:320px;display:flex;flex-direction:column;gap:14px}
+.card h1{text-align:center;font-size:20px}
+.card p{text-align:center;font-size:12px;color:#8888aa;line-height:1.6}
+label{font-size:12px;color:#8888aa;font-weight:600}
+input.fi{width:100%;background:#1e1e2a;border:1px solid #2a2a3a;border-radius:10px;padding:10px 13px;font-size:15px;color:#e8e8f5;outline:none;font-family:inherit;text-align:right;margin-top:4px}
+input.fi:focus{border-color:#7c6af7}
+button.jb{background:#7c6af7;color:#fff;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;width:100%}
 
-/* ─── JOIN ─── */
-#J{align-items:center;justify-content:center;padding:20px;
-   background:radial-gradient(ellipse at 50% 30%,#1a1535,var(--bg) 70%)}
-.card{background:var(--surf);border:1px solid var(--brd);border-radius:18px;
-      padding:28px 22px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:14px}
-.logo{text-align:center;font-size:44px}
-.jtitle{text-align:center;font-size:20px;font-weight:800}
-.jsub{text-align:center;font-size:12px;color:var(--tx2);line-height:1.6}
-.lbl{font-size:12px;color:var(--tx2);margin-bottom:4px;font-weight:600}
-.inp{width:100%;background:var(--surf2);border:1px solid var(--brd);border-radius:10px;
-     padding:10px 13px;font-size:15px;color:var(--tx);outline:none;font-family:inherit;text-align:right}
-.inp:focus{border-color:var(--ac)}
-.jbtn{background:var(--ac);color:#fff;border:none;border-radius:10px;
-      padding:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;width:100%}
-.jnote{font-size:11px;color:var(--tx2);text-align:center;line-height:1.8}
+/* APP */
+#app{flex:1;display:flex;flex-direction:row;overflow:hidden}
 
-/* ─── APP ─── */
-#A{flex-direction:column}
+/* CHAT — راست */
+#chat{width:155px;flex-shrink:0;display:flex;flex-direction:column;background:#16161f;border-left:1px solid #2a2a3a}
+#chat h3{padding:8px 10px;border-bottom:1px solid #2a2a3a;font-size:11px;color:#8888aa;flex-shrink:0}
+#msgs{flex:1;overflow-y:auto;padding:6px;display:flex;flex-direction:column;gap:3px}
+#msgs::-webkit-scrollbar{width:2px}
+#msgs::-webkit-scrollbar-thumb{background:#2a2a3a}
+.m{padding:4px 8px;border-radius:9px;font-size:11px;line-height:1.4;word-break:break-word;max-width:100%}
+.m.me{background:#7c6af7;color:#fff;align-self:flex-end}
+.m.ot{background:#1e1e2a;align-self:flex-start}
+.m.sy{color:#8888aa;font-size:10px;text-align:center;align-self:center;background:none}
+.m .sn{font-size:9px;opacity:.7;margin-bottom:1px;font-weight:700}
+#cinp-wrap{padding:5px;border-top:1px solid #2a2a3a;display:flex;gap:4px;flex-shrink:0}
+#cinp{flex:1;background:#1e1e2a;border:1px solid #2a2a3a;border-radius:8px;padding:6px;font-size:12px;color:#e8e8f5;outline:none;resize:none;height:32px;font-family:inherit}
+#cinp:focus{border-color:#7c6af7}
+#csend{background:#7c6af7;border:none;border-radius:8px;color:#fff;width:32px;height:32px;cursor:pointer;font-size:14px;flex-shrink:0}
 
-/* header */
-.hdr{background:var(--surf);border-bottom:1px solid var(--brd);
-     padding:8px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;
-     padding-top:calc(8px + env(safe-area-inset-top,0px))}
-.hlogo{font-size:15px;font-weight:800;color:var(--ac);white-space:nowrap}
-.rpill{font-size:11px;background:var(--surf2);border:1px solid var(--brd);
-       border-radius:7px;padding:3px 8px;color:var(--tx2);cursor:pointer;
-       display:flex;align-items:center;gap:5px}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--rd);flex-shrink:0;transition:background .3s}
-.dot.ok{background:var(--gr)}.dot.yw{background:var(--yw)}
-.hbdg{font-size:10px;background:var(--ac);color:#fff;border-radius:5px;
-      padding:2px 7px;font-weight:700;display:none}
-.hbdg.on{display:inline-block}
-.vcnt{margin-right:auto;font-size:12px;color:var(--tx2)}
+/* VIDEO — چپ */
+#vpanel{flex:1;display:flex;flex-direction:column;background:#000;position:relative;overflow:hidden}
 
-/* ─── MAIN ─── */
-.main{
-  flex:1;display:flex;flex-direction:row;overflow:hidden;min-height:0;
-}
+/* header داخل vpanel */
+#vhdr{background:#16161f;border-bottom:1px solid #2a2a3a;padding:7px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+#vhdr .logo{font-size:14px;font-weight:800;color:#7c6af7}
+#rpill{font-size:11px;background:#1e1e2a;border:1px solid #2a2a3a;border-radius:6px;padding:2px 8px;color:#8888aa;cursor:pointer;display:flex;align-items:center;gap:4px}
+.dot{width:6px;height:6px;border-radius:50%;background:#ef4444}
+.dot.ok{background:#22c55e}
+#hbdg{font-size:10px;background:#7c6af7;color:#fff;border-radius:5px;padding:2px 7px;font-weight:700;display:none}
+#hbdg.on{display:inline-block}
+#vcnt{margin-right:auto;font-size:11px;color:#8888aa}
 
-/* ─── VIDEO AREA ─── */
-.vpanel{
-  flex:1;position:relative;background:#000;overflow:hidden;
-  min-height:0;min-width:0;height:100%;
-}
-video{width:100%;height:100%;object-fit:contain;display:none;position:absolute;inset:0;z-index:1}
+/* ویدیو */
+#varea{flex:1;position:relative;overflow:hidden;background:#000}
+video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;z-index:1}
 video.on{display:block}
 
-/* upload / viewer zones */
-.zone{position:absolute;inset:0;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center}
-.zone.off{display:none}
-.dbox{border:2px dashed var(--brd);border-radius:14px;padding:24px 18px;
-      cursor:pointer;transition:all .2s;max-width:260px;width:100%;
-      background:rgba(124,106,247,.04)}
-.dbox:active{border-color:var(--ac);background:rgba(124,106,247,.12)}
-.dico{font-size:36px;margin-bottom:8px}
-.dtit{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:5px}
-.dsub{font-size:11px;color:var(--tx2);line-height:1.5}
-.dfmt{font-size:10px;margin-top:5px;color:var(--ac)}
-.pwrap{width:100%;max-width:240px;display:none;flex-direction:column;gap:5px;align-items:center}
-.pwrap.on{display:flex}
-.pbar{width:100%;height:5px;background:var(--brd);border-radius:5px;overflow:hidden}
-.pfill{height:100%;background:var(--ac);border-radius:5px;width:0%;transition:width .1s}
-.plbl{font-size:11px;color:var(--ac)}
-.vico{font-size:36px;margin-bottom:6px}
-.vtit{font-size:14px;color:var(--tx);font-weight:700;margin-bottom:5px}
-.vsub{font-size:11px;color:var(--tx2);line-height:1.5}
+/* zone ها */
+.zone{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;text-align:center;z-index:2}
+.zone.hide{display:none}
+.dbox{border:2px dashed #2a2a3a;border-radius:14px;padding:20px 16px;cursor:pointer;max-width:220px;width:100%;background:rgba(124,106,247,.05)}
+.dbox:active{border-color:#7c6af7;background:rgba(124,106,247,.12)}
+.dico{font-size:32px;margin-bottom:8px}
+.dtit{font-size:13px;font-weight:700;margin-bottom:4px}
+.dsub{font-size:10px;color:#8888aa;line-height:1.5}
+.dfmt{font-size:10px;color:#7c6af7;margin-top:4px}
+#pbar-wrap{width:200px;display:none;flex-direction:column;gap:5px;align-items:center}
+#pbar-wrap.on{display:flex}
+#pbar{width:100%;height:5px;background:#2a2a3a;border-radius:5px;overflow:hidden}
+#pfill{height:100%;background:#7c6af7;width:0%;transition:width .1s}
+#plbl{font-size:11px;color:#7c6af7}
 
-/* ─── CONTROLS ─── */
-.ctrl{
+/* نوار کنترل — ALWAYS VISIBLE بعد از لود */
+#ctrl{
   position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(transparent,rgba(0,0,0,.95));
-  padding:8px 12px 10px;
-  display:none;flex-direction:column;gap:6px;
-  z-index:20;
+  background:linear-gradient(transparent,rgba(0,0,0,.96));
+  padding:6px 10px 8px;
+  flex-direction:column;gap:5px;
+  z-index:10;
+  display:none;
 }
-.ctrl.on{display:flex}
+#ctrl.on{display:flex}
 
-/* seek bar — بزرگ‌تر برای لمس راحت */
-.seekw{
-  width:100%;height:28px;display:flex;align-items:center;
-  cursor:pointer;touch-action:none;
-}
-.seekt{width:100%;height:5px;background:rgba(255,255,255,.25);border-radius:5px;position:relative}
-.seekf{
-  height:100%;background:var(--ac);border-radius:5px;
-  pointer-events:none;width:0%;position:relative;
-}
-.seekf::after{
-  content:'';position:absolute;right:-8px;top:50%;transform:translateY(-50%);
-  width:16px;height:16px;background:#fff;border-radius:50%;
-  box-shadow:0 0 4px rgba(0,0,0,.4);
-}
-.crow{display:flex;align-items:center;gap:6px}
-.cbtn{
-  background:none;border:none;color:#fff;font-size:22px;
-  cursor:pointer;padding:4px 6px;border-radius:6px;line-height:1;
-  display:flex;align-items:center;justify-content:center;
-  min-width:36px;min-height:36px;
-}
-.cbtn:active{background:rgba(255,255,255,.2)}
-.tdisp{font-size:11px;color:rgba(255,255,255,.75);white-space:nowrap;flex-shrink:0}
-.volw{display:flex;align-items:center;gap:4px;margin-right:auto}
-input[type=range]{width:50px;accent-color:var(--ac)}
-.fsbtn{background:rgba(255,255,255,.15);border:none;color:#fff;
-       border-radius:7px;padding:4px 8px;font-size:14px;cursor:pointer;
-       display:flex;align-items:center;white-space:nowrap;gap:4px}
-.fsbtn:active{background:rgba(255,255,255,.3)}
+/* seek */
+#sk{width:100%;height:28px;display:flex;align-items:center;cursor:pointer;touch-action:none}
+#skt{width:100%;height:6px;background:rgba(255,255,255,.2);border-radius:6px;position:relative}
+#skf{height:100%;background:#7c6af7;border-radius:6px;width:0%;position:relative}
+#skf::after{content:'';position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:16px;height:16px;background:#fff;border-radius:50%}
 
-.synct{
-  position:absolute;top:10px;left:50%;transform:translateX(-50%);
-  background:rgba(34,197,94,.92);color:#fff;padding:4px 12px;
-  border-radius:14px;font-size:12px;font-weight:600;
-  opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:10;
-}
-.synct.on{opacity:1}
+.cr{display:flex;align-items:center;gap:5px}
+.cb{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.cb:active{background:rgba(255,255,255,.2)}
+#td{font-size:11px;color:rgba(255,255,255,.7);white-space:nowrap}
+.vw{display:flex;align-items:center;gap:4px;margin-right:auto}
+input[type=range]{width:48px;accent-color:#7c6af7}
+#fsbtn{background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:7px;padding:4px 8px;font-size:12px;cursor:pointer;white-space:nowrap}
+#fsbtn:active{background:rgba(255,255,255,.3)}
 
-/* ─── CHAT ─── */
-.cpanel{
-  width:160px;flex-shrink:0;display:flex;flex-direction:column;
-  border-right:1px solid var(--brd);background:var(--surf);
-  order:-1;
-}
-.chdr{padding:6px 12px;border-bottom:1px solid var(--brd);
-      font-size:11px;font-weight:700;color:var(--tx2);flex-shrink:0}
-.msgs{flex:1;overflow-y:auto;padding:6px 8px;display:flex;flex-direction:column;gap:3px;scroll-behavior:smooth}
-.msgs::-webkit-scrollbar{width:2px}
-.msgs::-webkit-scrollbar-thumb{background:var(--brd);border-radius:2px}
-.msg{padding:4px 8px;border-radius:9px;font-size:11px;line-height:1.4;
-     max-width:85%;word-break:break-word;animation:fu .15s}
-@keyframes fu{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
-.msg.me{background:var(--ac);color:#fff;align-self:flex-end;border-bottom-left-radius:2px}
-.msg.ot{background:var(--surf2);align-self:flex-start;border-bottom-right-radius:2px}
-.msg.sy{background:none;color:var(--tx2);font-size:10px;text-align:center;
-         padding:1px 4px;align-self:center;max-width:100%}
-.msg .sn{font-size:9px;font-weight:700;opacity:.7;margin-bottom:1px}
-.msg .mt{font-size:9px;opacity:.4;margin-top:1px}
-.msg.me .mt{text-align:left}
-.cinpw{
-  padding:5px 8px;border-top:1px solid var(--brd);
-  display:flex;gap:5px;flex-shrink:0;
-  padding-bottom:calc(5px + env(safe-area-inset-bottom,0px));
-}
-textarea.ci{
-  flex:1;background:var(--surf2);border:1px solid var(--brd);
-  border-radius:8px;padding:6px 8px;font-size:13px;color:var(--tx);
-  outline:none;resize:none;height:32px;max-height:80px;
-  font-family:inherit;line-height:1.3;
-}
-textarea.ci:focus{border-color:var(--ac)}
-.sbtn{
-  background:var(--ac);border:none;border-radius:8px;color:#fff;
-  width:32px;height:32px;cursor:pointer;flex-shrink:0;
-  font-size:14px;display:flex;align-items:center;justify-content:center;
-}
-.sbtn:active{background:var(--ac2)}
+#synct{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:rgba(34,197,94,.92);color:#fff;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:15;white-space:nowrap}
+#synct.on{opacity:1}
 </style>
 </head>
 <body>
 
 <!-- JOIN -->
-<div id="J" class="scr on">
+<div id="join">
   <div class="card">
-    <div class="logo">🎬</div>
-    <div class="jtitle">SyncWatch</div>
-    <div class="jsub">فیلم رو با دوستت همزمان ببین</div>
+    <h1>🎬 SyncWatch</h1>
+    <p>فیلم رو با دوستت همزمان ببین<br>هر دو فایل رو لوکال باز می‌کنن</p>
     <div>
-      <div class="lbl">اسمت</div>
-      <input class="inp" id="ni" type="text" placeholder="مثلاً: علی" maxlength="20">
+      <label>اسمت</label>
+      <input class="fi" id="ni" type="text" placeholder="مثلاً: علی" maxlength="20">
     </div>
     <div>
-      <div class="lbl">کد اتاق (هر دو نفر یکی بنویسید)</div>
-      <input class="inp" id="ri" type="text" placeholder="مثلاً: film1" maxlength="20">
+      <label>کد اتاق (هر دو یکی بنویسید)</label>
+      <input class="fi" id="ri" type="text" placeholder="مثلاً: film1" maxlength="20">
     </div>
-    <button class="jbtn" onclick="joinRoom()">ورود به اتاق ←</button>
-    <div class="jnote">⚡ هر دو فایل رو لوکال باز می‌کنن — بدون آپلود<br>🔒 فقط play/pause/seek sync میشه</div>
+    <button class="jb" onclick="doJoin()">ورود ←</button>
   </div>
 </div>
 
 <!-- APP -->
-<div id="A" class="scr">
-  <div class="hdr">
-    <div class="hlogo">🎬 SyncWatch</div>
-    <div class="rpill" onclick="copyRoom()">
-      <div class="dot" id="dot"></div>
-      <span id="rlbl">—</span>
+<div id="app">
+
+  <!-- VIDEO سمت چپ -->
+  <div id="vpanel">
+    <div id="vhdr">
+      <div class="logo">🎬 SyncWatch</div>
+      <div id="rpill" onclick="copyRoom()"><div class="dot" id="dot"></div><span id="rlbl">—</span></div>
+      <div id="hbdg">میزبان</div>
+      <div id="vcnt">۱ نفر</div>
     </div>
-    <div class="hbdg" id="hbdg">میزبان</div>
-    <div class="vcnt" id="vcnt">۱ نفر</div>
-  </div>
-
-  <div class="main">
-    <!-- VIDEO -->
-    <div class="vpanel" id="vpanel">
-
-      <!-- upload zone -->
-      <div class="zone off" id="upz">
+    <div id="varea">
+      <!-- upload -->
+      <div class="zone hide" id="upz">
         <div class="dbox" onclick="pickFile()">
           <div class="dico">🎥</div>
           <div class="dtit">فایل ویدیو رو انتخاب کن</div>
           <div class="dsub">کلیک کن یا فایل رو بکش</div>
-          <div class="dfmt">MP4 · MKV · AVI · MOV — هر سایزی</div>
+          <div class="dfmt">MP4 · MKV · AVI · MOV</div>
         </div>
-        <div class="pwrap" id="pw">
-          <div class="pbar"><div class="pfill" id="pf"></div></div>
-          <div class="plbl" id="pl">در حال بارگذاری...</div>
+        <div id="pbar-wrap">
+          <div id="pbar"><div id="pfill"></div></div>
+          <div id="plbl">در حال بارگذاری...</div>
         </div>
       </div>
-
-      <!-- viewer waiting -->
-      <div class="zone off" id="vzn">
-        <div class="vico">⏳</div>
-        <div class="vtit">منتظر میزبان باش</div>
-        <div class="vsub">وقتی میزبان شروع کنه<br>تو هم همون فایل رو انتخاب کن</div>
+      <!-- viewer -->
+      <div class="zone hide" id="vzn">
+        <div style="font-size:32px">⏳</div>
+        <div style="font-size:13px;font-weight:700">منتظر میزبان باش</div>
+        <div style="font-size:11px;color:#8888aa;line-height:1.5">وقتی میزبان شروع کنه<br>تو هم همون فایل رو انتخاب کن</div>
       </div>
-
       <video id="vid" playsinline></video>
-      <div class="synct" id="synct">همگام‌سازی ✓</div>
-
+      <div id="synct">همگام‌سازی ✓</div>
       <!-- controls -->
-      <div class="ctrl" id="ctrl">
-        <div class="seekw" id="seekw">
-          <div class="seekt"><div class="seekf" id="sf"></div></div>
+      <div id="ctrl">
+        <div id="sk"><div id="skt"><div id="skf"></div></div></div>
+        <div class="cr">
+          <button class="cb" id="pb" onclick="togglePlay()">▶</button>
+          <button class="cb" onclick="skip(-10)">⏪</button>
+          <button class="cb" onclick="skip(10)">⏩</button>
+          <span id="td">۰:۰۰ / ۰:۰۰</span>
+          <div class="vw">🔊<input type="range" min="0" max="1" step="0.05" value="1" oninput="vid.volume=this.value"></div>
+          <button id="fsbtn" onclick="goFS()">⛶ تمام‌صفحه</button>
         </div>
-        <div class="crow">
-          <button class="cbtn" id="pb" onclick="togglePlay()">▶</button>
-          <button class="cbtn" onclick="skip(-10)">⏪</button>
-          <button class="cbtn" onclick="skip(10)">⏩</button>
-          <span class="tdisp" id="td">۰:۰۰ / ۰:۰۰</span>
-          <div class="volw">🔊<input type="range" min="0" max="1" step="0.05" value="1" oninput="setVol(this.value)"></div>
-          <button class="fsbtn" onclick="goFS()">⛶ تمام‌صفحه</button>
-        </div>
-      </div>
-
-    </div><!-- /vpanel -->
-
-    <!-- CHAT -->
-    <div class="cpanel">
-      <div class="chdr">💬 چت زنده</div>
-      <div class="msgs" id="msgs">
-        <div class="msg sy">در حال اتصال...</div>
-      </div>
-      <div class="cinpw">
-        <textarea class="ci" id="ci" placeholder="پیام بنویس..."></textarea>
-        <button class="sbtn" onclick="sendChat()">➤</button>
       </div>
     </div>
+  </div>
 
-  </div><!-- /main -->
-</div><!-- /app -->
+  <!-- CHAT سمت راست -->
+  <div id="chat">
+    <h3>💬 چت زنده</h3>
+    <div id="msgs"><div class="m sy">در حال اتصال...</div></div>
+    <div id="cinp-wrap">
+      <textarea id="cinp" placeholder="پیام..."></textarea>
+      <button id="csend" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+
+</div>
 
 <input type="file" id="fi" accept="video/*" style="display:none" onchange="fileChosen(this)">
 
 <script>
-const WS_URL = location.protocol==='https:'
-  ? `wss://${location.host}`
-  : `ws://${location.host}`;
-
-let ws=null, myName='', myRoom='', isHost=false;
+const WS=location.protocol==='https:'?`wss://${location.host}`:`ws://${location.host}`;
+let ws,myName='',myRoom='',isHost=false,videoReady=false,isSyncing=false,rDelay=1000;
 const vid=document.getElementById('vid');
-let videoReady=false, isSyncing=false, reconnDelay=1000;
 const $=id=>document.getElementById(id);
-function toFa(n){return String(Math.floor(n)).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])}
-function fmtT(s){s=Math.floor(s||0);return toFa(Math.floor(s/60))+':'+String(s%60).padStart(2,'0')}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+const toFa=n=>String(Math.floor(n)).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const fmtT=s=>{s=Math.floor(s||0);return toFa(Math.floor(s/60))+':'+String(s%60).padStart(2,'0')};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-/* JOIN */
 $('ni').onkeydown=e=>{if(e.key==='Enter')$('ri').focus()};
-$('ri').onkeydown=e=>{if(e.key==='Enter')joinRoom()};
-function joinRoom(){
-  const name=$('ni').value.trim();
-  const room=$('ri').value.trim().replace(/\s+/g,'_');
-  if(!name){$('ni').focus();return}
-  if(!room){$('ri').focus();return}
-  myName=name; myRoom=room;
-  $('J').classList.remove('on');
-  $('A').classList.add('on');
-  $('rlbl').textContent=room;
-  connectWS();
+$('ri').onkeydown=e=>{if(e.key==='Enter')doJoin()};
+
+function doJoin(){
+  const n=$('ni').value.trim(),r=$('ri').value.trim().replace(/\s+/g,'_');
+  if(!n||!r)return;
+  myName=n;myRoom=r;
+  $('join').classList.add('hide');
+  $('rlbl').textContent=r;
+  connect();
 }
 
-/* WS */
-function connectWS(){
+function connect(){
   setDot('yw');
-  try{ws=new WebSocket(WS_URL)}catch{setDot('');schedR();return}
-  ws.onopen=()=>{reconnDelay=1000;setDot('ok');send({type:'join',room:myRoom,name:myName})};
-  ws.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch{return}onMsg(m)};
-  ws.onclose=()=>{setDot('');schedR()};
+  try{ws=new WebSocket(WS)}catch{setDot('');recon();return}
+  ws.onopen=()=>{rDelay=1000;setDot('ok');send({type:'join',room:myRoom,name:myName})};
+  ws.onmessage=e=>{try{handle(JSON.parse(e.data))}catch{}};
+  ws.onclose=()=>{setDot('');recon()};
   ws.onerror=()=>{};
   setInterval(()=>{if(ws&&ws.readyState===1)send({type:'ping'})},25000);
 }
 function send(o){if(ws&&ws.readyState===1)ws.send(JSON.stringify(o))}
-function schedR(){setTimeout(()=>{addSys('🔄 اتصال مجدد...');connectWS()},reconnDelay);reconnDelay=Math.min(reconnDelay*2,15000)}
-function setDot(s){const d=$('dot');d.className='dot';if(s==='ok')d.classList.add('ok');else if(s==='yw')d.classList.add('yw')}
+function recon(){setTimeout(()=>{sys('🔄 اتصال مجدد...');connect()},rDelay);rDelay=Math.min(rDelay*2,15000)}
+function setDot(s){const d=$('dot');d.className='dot';if(s==='ok')d.classList.add('ok')}
 
-function onMsg(m){
-  switch(m.type){
-    case 'joined':
-      isHost=m.isHost;
-      $('hbdg').classList.toggle('on',isHost);
-      zones();
-      addSys(isHost?'شما میزبان هستید — فایل رو انتخاب کن':'منتظر میزبان باش...');
-      break;
-    case 'promoted':
-      isHost=true;$('hbdg').classList.add('on');addSys('⭐ '+m.message);zones();break;
-    case 'room_info':
-      $('vcnt').textContent=toFa(m.count)+' نفر';break;
-    case 'chat':
-      if(m.system){addSys(m.text);break}
-      addMsg(m.name,m.text,false,m.time);break;
-    case 'play':
-      if(!videoReady){askFile();return}
-      isSyncing=true;vid.currentTime=m.time;vid.play().catch(()=>{});updPB();showSync();
-      setTimeout(()=>{isSyncing=false},600);break;
-    case 'pause':
-      if(!videoReady){askFile();return}
-      isSyncing=true;vid.currentTime=m.time;vid.pause();updPB();showSync();
-      setTimeout(()=>{isSyncing=false},600);break;
-    case 'seek':
-      if(!videoReady)return;
-      isSyncing=true;vid.currentTime=m.time;showSync();
-      setTimeout(()=>{isSyncing=false},600);break;
+function handle(m){
+  if(m.type==='joined'){
+    isHost=m.isHost;
+    $('hbdg').classList.toggle('on',isHost);
+    isHost?($('upz').classList.remove('hide'),$('vzn').classList.add('hide')):($('upz').classList.add('hide'),$('vzn').classList.remove('hide'));
+    sys(isHost?'میزبان هستید — فایل رو انتخاب کن':'منتظر میزبان...');
+  }else if(m.type==='promoted'){
+    isHost=true;$('hbdg').classList.add('on');sys('⭐ '+m.message);
+    $('upz').classList.remove('hide');$('vzn').classList.add('hide');
+  }else if(m.type==='room_info'){
+    $('vcnt').textContent=toFa(m.count)+' نفر';
+  }else if(m.type==='chat'){
+    m.system?sys(m.text):addMsg(m.name,m.text,false,m.time);
+  }else if(m.type==='play'){
+    if(!videoReady){askFile();return}
+    isSyncing=true;vid.currentTime=m.time;vid.play().catch(()=>{});updPB();showSync();
+    setTimeout(()=>{isSyncing=false},600);
+  }else if(m.type==='pause'){
+    if(!videoReady){askFile();return}
+    isSyncing=true;vid.currentTime=m.time;vid.pause();updPB();showSync();
+    setTimeout(()=>{isSyncing=false},600);
+  }else if(m.type==='seek'){
+    if(!videoReady)return;
+    isSyncing=true;vid.currentTime=m.time;showSync();
+    setTimeout(()=>{isSyncing=false},600);
   }
 }
 
-function zones(){
-  if(isHost){$('upz').classList.remove('off');$('vzn').classList.add('off')}
-  else{$('upz').classList.add('off');$('vzn').classList.remove('off')}
-}
 function pickFile(){$('fi').click()}
 function askFile(){
-  addSys('🎬 میزبان شروع کرد — همون فایل رو انتخاب کن');
-  $('vzn').classList.add('off');$('upz').classList.remove('off');
-  $('fi').click();
+  sys('🎬 میزبان شروع کرد — همون فایل رو انتخاب کن');
+  $('vzn').classList.add('hide');$('upz').classList.remove('hide');$('fi').click();
 }
-function fileChosen(inp){const f=inp.files[0];if(f)loadFile(f)}
+function fileChosen(inp){if(inp.files[0])loadFile(inp.files[0])}
 
 function loadFile(file){
-  $('pw').classList.add('on');$('pf').style.width='0%';$('pl').textContent='در حال بارگذاری...';
-  const url=URL.createObjectURL(file);vid.src=url;vid.load();
-  let p=0;const t=setInterval(()=>{p=Math.min(p+12,85);$('pf').style.width=p+'%'},100);
+  $('pbar-wrap').classList.add('on');$('pfill').style.width='0%';$('plbl').textContent='بارگذاری...';
+  vid.src=URL.createObjectURL(file);vid.load();
+  let p=0;const t=setInterval(()=>{p=Math.min(p+10,85);$('pfill').style.width=p+'%'},100);
   vid.oncanplay=()=>{
-    clearInterval(t);$('pf').style.width='100%';$('pl').textContent='✅ آماده!';
+    clearInterval(t);$('pfill').style.width='100%';
     setTimeout(()=>{
       videoReady=true;
       vid.classList.add('on');
-      $('upz').classList.add('off');
-      $('vzn').classList.add('off');
+      $('upz').classList.add('hide');
+      $('vzn').classList.add('hide');
       $('ctrl').classList.add('on');
       bindVid();
-      addSys('✅ آماده پخش!');
+      sys('✅ آماده پخش!');
     },300);
   };
-  vid.onerror=()=>{clearInterval(t);$('pl').textContent='❌ خطا'}
+  vid.onerror=()=>{clearInterval(t);$('plbl').textContent='❌ خطا'};
 }
 
-/* VIDEO */
 function bindVid(){
   vid.addEventListener('timeupdate',()=>{
     if(!vid.duration)return;
-    $('sf').style.width=(vid.currentTime/vid.duration*100)+'%';
+    $('skf').style.width=(vid.currentTime/vid.duration*100)+'%';
     $('td').textContent=fmtT(vid.currentTime)+' / '+fmtT(vid.duration);
   });
   vid.addEventListener('play',updPB);
   vid.addEventListener('pause',updPB);
 
-  /* لمس روی ویدیو — فقط اگه seek نباشه */
-  $('vpanel').addEventListener('touchend',e=>{
-    if(e.target.closest('.ctrl'))return;
-    e.preventDefault();
-    togglePlay();
+  // لمس روی ویدیو = play/pause (نه روی ctrl)
+  $('varea').addEventListener('touchend',e=>{
+    if(e.target.closest('#ctrl'))return;
+    e.preventDefault();togglePlay();
   },{passive:false});
 
-  /* seek — mouse */
-  let seek=false;
-  const sw=$('seekw');
-  sw.addEventListener('mousedown',e=>{seek=true;doSeek(e)});
-  document.addEventListener('mousemove',e=>{if(seek)doSeek(e)});
-  document.addEventListener('mouseup',()=>{seek=false});
-
-  /* seek — touch (روی seekw فقط) */
-  sw.addEventListener('touchstart',e=>{seek=true;doSeekT(e)},{passive:true});
-  sw.addEventListener('touchmove',e=>{e.preventDefault();doSeekT(e)},{passive:false});
-  sw.addEventListener('touchend',()=>{seek=false});
-
-  /* keyboard */
-  document.addEventListener('keydown',e=>{
-    if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;
-    if(e.key===' '){e.preventDefault();togglePlay()}
-    if(e.key==='ArrowRight')skip(10);
-    if(e.key==='ArrowLeft')skip(-10);
-  });
+  // seek touch
+  let sk=false;
+  $('sk').addEventListener('touchstart',e=>{sk=true;doSeekT(e)},{passive:true});
+  $('sk').addEventListener('touchmove',e=>{if(sk){e.preventDefault();doSeekT(e)}},{passive:false});
+  $('sk').addEventListener('touchend',()=>{sk=false});
+  // seek mouse
+  $('sk').addEventListener('mousedown',e=>{sk=true;doSeek(e)});
+  document.addEventListener('mousemove',e=>{if(sk)doSeek(e)});
+  document.addEventListener('mouseup',()=>{sk=false});
 }
 
 function doSeek(e){
-  const r=$('seekw').getBoundingClientRect();
+  const r=$('sk').getBoundingClientRect();
   const pct=1-Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));
-  const t=pct*vid.duration;
-  vid.currentTime=t;
+  const t=pct*vid.duration;vid.currentTime=t;
   if(isHost)send({type:'seek',time:t});
 }
 function doSeekT(e){if(e.touches[0])doSeek(e.touches[0])}
 
 function togglePlay(){
   if(!videoReady)return;
-  if(vid.paused){
-    vid.play().catch(()=>{});
-    if(isHost)send({type:'play',time:vid.currentTime});
-  }else{
-    vid.pause();
-    if(isHost)send({type:'pause',time:vid.currentTime});
-  }
+  if(vid.paused){vid.play().catch(()=>{});if(isHost)send({type:'play',time:vid.currentTime})}
+  else{vid.pause();if(isHost)send({type:'pause',time:vid.currentTime})}
 }
 function skip(s){
   if(!videoReady)return;
   const t=Math.max(0,Math.min(vid.duration||0,vid.currentTime+s));
-  vid.currentTime=t;
-  if(isHost)send({type:'seek',time:t});
+  vid.currentTime=t;if(isHost)send({type:'seek',time:t});
 }
-function setVol(v){vid.volume=v}
 function updPB(){$('pb').textContent=vid.paused?'▶':'⏸'}
 function showSync(){
   const t=$('synct');t.classList.add('on');
   clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),1500);
 }
-
-/* FULLSCREEN — از browser API استفاده می‌کنه */
 function goFS(){
   const el=document.documentElement;
   if(document.fullscreenElement||document.webkitFullscreenElement){
-    (document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document);
+    (document.exitFullscreen||document.webkitExitFullscreen).call(document);
   }else{
-    const req=el.requestFullscreen||el.webkitRequestFullscreen;
-    if(req) req.call(el);
+    (el.requestFullscreen||el.webkitRequestFullscreen).call(el);
   }
 }
 
-/* CHAT */
-$('ci').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}};
+// CHAT
+$('cinp').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}};
 function sendChat(){
-  const i=$('ci');const t=i.value.trim();if(!t)return;
+  const i=$('cinp'),t=i.value.trim();if(!t)return;
   i.value='';addMsg(myName,t,true,Date.now());send({type:'chat',text:t});
 }
 function addMsg(name,text,isMe,ts){
-  const m=$('msgs');const d=document.createElement('div');
-  d.className='msg '+(isMe?'me':'ot');
+  const m=$('msgs'),d=document.createElement('div');
+  d.className='m '+(isMe?'me':'ot');
   const dt=new Date(ts||Date.now());
   const ti=dt.getHours()+':'+String(dt.getMinutes()).padStart(2,'0');
-  d.innerHTML=`<div class="sn">${esc(name)}</div><div>${esc(text)}</div><div class="mt">${ti}</div>`;
+  d.innerHTML=`<div class="sn">${esc(name)}</div><div>${esc(text)}</div>`;
   m.appendChild(d);m.scrollTop=m.scrollHeight;
 }
-function addSys(t){
-  const m=$('msgs');const d=document.createElement('div');
-  d.className='msg sy';d.textContent=t;
-  m.appendChild(d);m.scrollTop=m.scrollHeight;
+function sys(t){
+  const m=$('msgs'),d=document.createElement('div');
+  d.className='m sy';d.textContent=t;m.appendChild(d);m.scrollTop=m.scrollHeight;
 }
 function copyRoom(){
-  navigator.clipboard?.writeText(myRoom).then(()=>addSys('✅ کپی شد: '+myRoom));
+  navigator.clipboard?.writeText(myRoom).then(()=>sys('✅ کپی شد'));
 }
 </script>
 </body>
